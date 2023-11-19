@@ -3,19 +3,19 @@ import axios from "axios";
 
 
 function Inven(){
-    const userId = localStorage.getItem('userId');
+    const userEmail = localStorage.getItem('userEmail');
 
     const [items, setItems] = useState([]);
     
     
     useEffect(() => {
-        inventory(userId)
+        inventory(userEmail)
     }, []);
 
-    const inventory = async (userId) => {
+    const inventory = async (userEmail) => {
         try {
             //   // Make a GET request using Axios to your API endpoint with the retrieved ID
-                    const response = await axios.get(`http://localhost:8080/Inven/api/${userId}`); // Update the URL accordingly
+                    const response = await axios.get(`http://localhost:8080/Inven/api/getItem/${userEmail}`); // Update the URL accordingly
                     setItems(response.data);
                 } catch (error) {
                     console.error('Error fetching user data:', error);
@@ -29,7 +29,7 @@ function Inven(){
             <p>A. 인벤토리 페이지에 접속하면 사용자의 아이디를 사용해 
             인벤토리 아이템의 목록을 보여준다. </p>
             <div>
-                userId = {userId}
+                userEmail = {userEmail}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
         {items.map((item, index) => (

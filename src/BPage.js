@@ -12,18 +12,18 @@ const BPage = () => {
 
     useEffect(() => {
     // // Retrieve the user ID from localStorage
-        const userId = localStorage.getItem('userId');
+        const userEmail = localStorage.getItem('userEmail');
 
     // Call the API with the retrieved ID
-        fetchUserData(userId);
-        checkInven(userId);
+        fetchUserData(userEmail);
+        checkInven(userEmail);
     }, []);
 
-    //사용자 포인트 가져오기
-    const fetchUserData = async (userId) => {
+    //사용자 포인트 가져오기  done
+    const fetchUserData = async (userEmail) => {
         try {
     //   // Make a GET request using Axios to your API endpoint with the retrieved ID
-            const response = await axios.get(`http://localhost:8080/api/userData/${userId}`); // Update the URL accordingly
+            const response = await axios.get(`http://localhost:8080/Store/api/userpoint/${userEmail}`); // Update the URL accordingly
             setUserPoint(response.data);
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -31,19 +31,24 @@ const BPage = () => {
         }
     };
 
-    //사용자 포인트 업데이트
-    const updatePoint = async (userId, Point, itemId) => {
+    //사용자 포인트 업데이트 done
+    const updatePoint = async (userEmail, point, itemId) => {
         try{
-            await axios.get(`http://localhost:8080/api/purchase/${userId}?point=${Point}&itemId=${itemId}`);
+            await axios.get('http://localhost:8080/Store/api/purchase',{
+            params: {
+              userEmail,
+              point,
+              itemId,
+        }},);
         }catch (error) {
             console.error('Error fetching user data:', error);
         }
     }
 
-    //사용자 인벤토리 체크
-    const checkInven = async (userId) => {
+    //사용자 인벤토리 체크 done
+    const checkInven = async (userEmail) => {
       try{
-        const response = await axios.get(`http://localhost:8080/api/invencheck/${userId}`);
+        const response = await axios.get(`http://localhost:8080/Store/api/invencheck/${userEmail}`);
         setUserItem(response.data)
     }catch (error) {;
         console.error('Error fetching user data:', error);
@@ -51,7 +56,7 @@ const BPage = () => {
     }    
 
     const handlePurchase = async(itemNum,productName, price) => {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('userEmail');
         const Point = userPoint - price;
         if (userItem.includes(itemNum)){
           alert("이미 구매한 아이템입니다.")
@@ -91,6 +96,10 @@ const BPage = () => {
         }
       checkInven(userId);
       };
+
+    const pageControll = (page) =>{
+      navigate(`/${page}`)
+    } 
       
       
 
@@ -118,6 +127,8 @@ const BPage = () => {
           </div>
         </div>
         <p>userPas:{userItem}</p>
+        <button onClick={() => pageControll("Inven")}>aaa</button>
+        
       </div>
     );
 };
