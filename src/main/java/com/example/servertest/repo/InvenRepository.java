@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface InvenRepository extends JpaRepository<Inven,Long> {
-    List<Inven> findByUserId(Long id);
+    List<Inven> findByUserEmail(String userEmail);
 }
